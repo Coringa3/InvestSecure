@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   constructor(private finnhubService: FinnhubService) {}
 
   ngOnInit() {
-    this.getStockQuote('AAPL'); // Exemplo com o símbolo da Apple
+    this.getStockQuote('AAPL');
     this.getCompanyProfile('AAPL');
   }
 
