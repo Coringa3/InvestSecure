@@ -1,24 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <div *ngIf="stockQuote">
-    <h1>Cotação da Ação</h1>
-    <p>Preço Atual: {{ stockQuote.c }}</p>
-    <p>Alta do Dia: {{ stockQuote.h }}</p>
-    <p>Baixa do Dia: {{ stockQuote.l }}</p>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>Informações das Empresas</h1>
+      <div *ngFor="let company of companies">
+        <h2>{{ company.profile.name }} ({{ company.symbol }})</h2>
+        <p><strong>Indústria:</strong> {{ company.profile.finnhubIndustry }}</p>
+        <p><strong>Website:</strong> <a [href]="company.profile.weburl" target="_blank">{{ company.profile.weburl }}</a></p>
+        <p><strong>Preço Atual:</strong> {{ company.quote.c }}</p>
+        <p><strong>Alta do Dia:</strong> {{ company.quote.h }}</p>
+        <p><strong>Baixa do Dia:</strong> {{ company.quote.l }}</p>
+        <hr>
+      </div>
+    </div>
   </div>
-  
-  <div *ngIf="companyProfile">
-    <h1>Perfil da Empresa</h1>
-    <p>Nome: {{ companyProfile.name }}</p>
-    <p>Indústria: {{ companyProfile.finnhubIndustry }}</p>
-    <p>Website: <a [href]="companyProfile.weburl" target="_blank">{{ companyProfile.weburl }}</a></p>
-  </div>
-</body>
-</html>
-
+</div>

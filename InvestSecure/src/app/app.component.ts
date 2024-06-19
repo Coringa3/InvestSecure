@@ -8,36 +8,36 @@ import { FinnhubService } from './finnhub.service';
 })
 export class AppComponent implements OnInit {
   title = 'finnhub-app';
-  stockQuote: any;
-  companyProfile: any;
+  companies: any[] = [];
+  symbols: string[] = ['AAPL', 'MSFT', 'TSLA'];
 
   constructor(private finnhubService: FinnhubService) {}
 
   ngOnInit() {
-    this.getStockQuote('AAPL');
-    this.getCompanyProfile('AAPL');
+    this.symbols.forEach(symbol => {
+      this.getCompanyData(symbol);
+    });
   }
 
-  getStockQuote(symbol: string) {
+  getCompanyData(symbol: string) {
     this.finnhubService.getStockQuote(symbol).subscribe(
-      data => {
-        this.stockQuote = data;
-        console.log(this.stockQuote);
+      quoteData => {
+        this.finnhubService.getCompanyProfile(symbol).subscribe(
+          profileData => {
+            this.companies.push({
+              symbol,
+              quote: quoteData,
+              profile: profileData
+            });
+            console.log(`Data for ${symbol}:`, { quote: quoteData, profile: profileData });
+          },
+          error => {
+            console.error(`Error fetching company profile for ${symbol}`, error);
+          }
+        );
       },
       error => {
-        console.error('Error fetching stock quote', error);
-      }
-    );
-  }
-
-  getCompanyProfile(symbol: string) {
-    this.finnhubService.getCompanyProfile(symbol).subscribe(
-      data => {
-        this.companyProfile = data;
-        console.log(this.companyProfile);
-      },
-      error => {
-        console.error('Error fetching company profile', error);
+        console.error(`Error fetching stock quote for ${symbol}`, error);
       }
     );
   }
