@@ -1,16 +1,11 @@
-<div class="container">
-  <div class="row">
-    <div class="col">
-      <h1>Informações das Empresas</h1>
-      <div *ngFor="let company of companies">
-        <h2>{{ company.profile.name }} ({{ company.symbol }})</h2>
-        <p><strong>Indústria:</strong> {{ company.profile.finnhubIndustry }}</p>
-        <p><strong>Website:</strong> <a [href]="company.profile.weburl" target="_blank">{{ company.profile.weburl }}</a></p>
-        <p><strong>Preço Atual:</strong> {{ company.quote.c }}</p>
-        <p><strong>Alta do Dia:</strong> {{ company.quote.h }}</p>
-        <p><strong>Baixa do Dia:</strong> {{ company.quote.l }}</p>
-        <hr>
-      </div>
+<nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand">Navbar</a>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
     </div>
-  </div>
-</div>
+  </nav>
+
+<app-random-stocks></app-random-stocks>

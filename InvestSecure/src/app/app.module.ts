@@ -4,10 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { FinnhubService } from './finnhub.service';
+import { StockDisplayComponent } from './random-stocks/random-stocks.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    StockDisplayComponent
   ],
   imports: [
     BrowserModule,
