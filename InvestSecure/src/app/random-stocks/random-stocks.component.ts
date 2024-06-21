@@ -9,7 +9,7 @@ import { FinnhubService } from '../finnhub.service';
 export class StockDisplayComponent implements OnInit {
   stockQuotes: any[] = [];
   companyProfiles: any[] = [];
-  symbols: string[] = ['AAPL'];
+  symbols: string[] = ['AAPL', 'GOOGL', 'TSLA', 'AMZN', 'MSFT'];
 
   constructor(private finnhubService: FinnhubService) { }
 
