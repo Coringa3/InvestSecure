@@ -11,7 +11,7 @@
             <strong>Símbolo:</strong> {{ profile.symbol }}<br>
             <strong>Ação:</strong> {{ getStockQuote(profile.symbol)?.data.c | number: '1.2-2' }}$
           </p>
-          <a href="{{ profile.data.weburl }}" class="btn btn-primary" target="_blank">Detalhes</a>
+          <a href="{{ profile.data.weburl }}" class="btn btn-primary" style="background-color: green;border-color: green;" target="_blank">Visitar</a>
         </div>
       </div>
     </div>
