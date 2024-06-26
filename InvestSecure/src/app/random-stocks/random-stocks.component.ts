@@ -38,4 +38,8 @@ export class StockDisplayComponent implements OnInit {
       }
     );
   }
+
+  getStockQuote(symbol: string) {
+    return this.stockQuotes.find(quote => quote.symbol === symbol);
+  }
 }

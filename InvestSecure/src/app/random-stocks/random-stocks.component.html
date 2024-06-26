@@ -1,22 +1,19 @@
-<div *ngFor="let stock of stockQuotes; let i = index">
-  <div *ngIf="companyProfiles[i]?.data">
-    <div class="row">
-      <div class="col-sm-4 mb-2 mb-sm-0">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{ companyProfiles[i]?.data?.name }}</h5>
-            <p class="card-text">
-              <p>Symbol: {{ companyProfiles[i]?.data?.ticker }}</p>
-              <p>Current Price: {{ stock?.data?.c }}</p>
-          
-            <a [href]="companyProfiles[i]?.data?.weburl" class="btn btn-primary" target="_blank">Ver Empresa</a>
-          </div>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-4 mb-4" *ngFor="let profile of companyProfiles">
+      <div class="card company-card">
+        <div class="card-body d-flex align-items-center">
+          <img [src]="profile.data.logo" alt="{{ profile.data.name }} logo" class="company-logo me-2 rounded-circle">
+          <h5 class="card-title mb-0">{{ profile.data.name }}</h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            <strong>Símbolo:</strong> {{ profile.symbol }}<br>
+            <strong>Ação:</strong> {{ getStockQuote(profile.symbol)?.data.c | number: '1.2-2' }}$
+          </p>
+          <a href="{{ profile.data.weburl }}" class="btn btn-primary" target="_blank">Detalhes</a>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<div *ngIf="!stockQuotes.length || !companyProfiles.length">
-  <p>Carregando dados...</p>
 </div>
