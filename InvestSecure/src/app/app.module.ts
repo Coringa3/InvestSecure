@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { FinnhubService } from './finnhub.service';
 import { StockDisplayComponent } from './random-stocks/random-stocks.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { StockDisplayComponent } from './random-stocks/random-stocks.component';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [FinnhubService],
   bootstrap: [AppComponent]
