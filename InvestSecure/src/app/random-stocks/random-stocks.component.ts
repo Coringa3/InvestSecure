@@ -10,6 +10,7 @@ export class StockDisplayComponent implements OnInit {
   stockQuotes: any[] = [];
   companyProfiles: any[] = [];
   symbols: string[] = ['AAPL', 'GOOGL', 'TSLA', 'AMZN', 'MSFT', 'NVDA'];
+  selectedCompanyIndex: number = -1;
 
   constructor(private finnhubService: FinnhubService) { }
 
@@ -41,5 +42,19 @@ export class StockDisplayComponent implements OnInit {
 
   getStockQuote(symbol: string) {
     return this.stockQuotes.find(quote => quote.symbol === symbol);
+  }
+
+  selectCompany(index: number): void {
+    this.selectedCompanyIndex = index;
+    const selectedSymbol = this.companyProfiles[index].symbol;
+    this.showStockChart(selectedSymbol);
+  }
+
+  showStockChart(symbol: string): void {
+    // Implemente aqui a lógica para exibir o gráfico das oscilações das ações da empresa selecionada
+    console.log(`Mostrando gráfico para ação ${symbol}`);
+    // Aqui você pode usar uma biblioteca de gráficos como Chart.js ou Plotly para renderizar o gráfico
+    // Exemplo básico:
+    // this.chartService.renderStockChart(symbol);
   }
 }
