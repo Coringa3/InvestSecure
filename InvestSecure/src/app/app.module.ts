@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { FinnhubService } from './finnhub.service';
 import { StockDisplayComponent } from './random-stocks/random-stocks.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     BrowserModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
   providers: [FinnhubService],
   bootstrap: [AppComponent]

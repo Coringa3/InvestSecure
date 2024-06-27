@@ -1,4 +1,12 @@
 <div class="container mt-5">
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <input [(ngModel)]="searchSymbol" type="text" class="form-control" placeholder="Digite o símbolo da empresa">
+    </div>
+    <div class="col-md-2">
+      <button (click)="searchCompany()" class="btn btn-primary">Pesquisar</button>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-4 mb-4" *ngFor="let profile of companyProfiles; let i = index">
       <div class="card company-card" [class.selected]="selectedCompanyIndex === i" (click)="selectCompany(i)">

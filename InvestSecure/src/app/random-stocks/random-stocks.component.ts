@@ -11,6 +11,7 @@ export class StockDisplayComponent implements OnInit {
   companyProfiles: any[] = [];
   symbols: string[] = ['AAPL', 'GOOGL', 'TSLA', 'AMZN', 'MSFT', 'NVDA'];
   selectedCompanyIndex: number = -1;
+  searchSymbol: string = '';
 
   constructor(private finnhubService: FinnhubService) { }
 
@@ -51,10 +52,53 @@ export class StockDisplayComponent implements OnInit {
   }
 
   showStockChart(symbol: string): void {
-    // Implemente aqui a lógica para exibir o gráfico das oscilações das ações da empresa selecionada
     console.log(`Mostrando gráfico para ação ${symbol}`);
     // Aqui você pode usar uma biblioteca de gráficos como Chart.js ou Plotly para renderizar o gráfico
-    // Exemplo básico:
-    // this.chartService.renderStockChart(symbol);
+  }
+
+  searchCompany(): void {
+    if (this.searchSymbol) {
+      const symbol = this.searchSymbol.toUpperCase();
+
+      this.finnhubService.getStockQuote(symbol).subscribe(
+        quoteData => {
+          const existingQuoteIndex = this.stockQuotes.findIndex(quote => quote.symbol === symbol);
+          if (existingQuoteIndex !== -1) {
+            this.stockQuotes[existingQuoteIndex] = { symbol, data: quoteData };
+          } else {
+            this.stockQuotes.unshift({ symbol, data: quoteData });
+          }
+
+          this.finnhubService.getCompanyProfile(symbol).subscribe(
+            profileData => {
+              const existingProfileIndex = this.companyProfiles.findIndex(profile => profile.symbol === symbol);
+              if (existingProfileIndex !== -1) {
+                this.companyProfiles[existingProfileIndex] = { symbol, data: profileData };
+              } else {
+                this.companyProfiles.unshift({ symbol, data: profileData });
+              }
+
+              // Limite o número de perfis a 6 (ou a quantidade desejada)
+              if (this.companyProfiles.length > 6) {
+                this.companyProfiles.pop();
+              }
+
+              // Limpe o campo de busca
+              this.searchSymbol = '';
+            },
+            error => {
+              console.error('Erro ao obter o perfil da empresa', error);
+              alert('Erro ao obter o perfil da empresa');
+            }
+          );
+        },
+        error => {
+          console.error('Erro ao obter a cotação das ações', error);
+          alert('Erro ao obter a cotação das ações');
+        }
+      );
+    } else {
+      alert('Por favor, digite um símbolo de empresa.');
+    }
   }
 }
