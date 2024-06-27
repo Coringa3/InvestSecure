@@ -7,11 +7,15 @@ import { FinnhubService } from './finnhub.service';
 import { StockDisplayComponent } from './random-stocks/random-stocks.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { ComprarComponent } from './comprar/comprar.component';
+import { VenderComponent } from './vender/vender.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StockDisplayComponent
+    StockDisplayComponent,
+    ComprarComponent,
+    VenderComponent
   ],
   imports: [
     BrowserModule,
