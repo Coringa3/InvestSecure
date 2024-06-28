@@ -101,30 +101,67 @@ export class RandomStocksComponent implements OnInit {
   buyStock() {
     if (this.selectedCompanyIndex !== -1 && this.buyQuantity > 0) {
       const symbol = this.companyProfiles[this.selectedCompanyIndex].symbol;
-      this.walletService.buyStock(symbol, this.buyQuantity).subscribe(
-        response => {
-          // Atualizar a lista de ações possuídas após a compra
-          // Isso pode ser feito automaticamente se o serviço de wallet emitir um evento ou notificação
-          console.log('Compra realizada com sucesso:', response);
-          // Atualizar o saldo após a compra (simulado)
-          this.balance -= this.getStockQuote(symbol)?.data.c * this.buyQuantity;
-        },
-        error => {
-          console.error('Erro ao comprar ações:', error);
-          this.errorMessage = 'Erro ao comprar ações';
+      const pricePerShare = this.getStockQuote(symbol)?.data.c;
+  
+      if (pricePerShare) {
+        const totalCost = pricePerShare * this.buyQuantity;
+  
+        if (this.balance < totalCost) {
+          console.error('Saldo insuficiente para realizar a compra');
+          this.errorMessage = 'Saldo insuficiente para realizar a compra';
+          return; // Encerra a função se o saldo for insuficiente
         }
-      );
+  
+        this.walletService.buyStock(symbol, this.buyQuantity).subscribe(
+          success => {
+            if (success) {
+              console.log('Compra realizada com sucesso');
+              this.balance -= totalCost; // Atualiza o saldo após a compra
+            } else {
+              console.error('Erro ao comprar ações: não foi possível completar a compra');
+              this.errorMessage = 'Erro ao comprar ações: não foi possível completar a compra';
+            }
+          },
+          error => {
+            console.error('Erro ao comprar ações:', error);
+            this.errorMessage = 'Erro ao comprar ações';
+          }
+        );
+      } else {
+        console.error('Erro ao obter o preço da ação');
+        this.errorMessage = 'Erro ao obter o preço da ação';
+      }
     } else {
-      this.errorMessage = 'Por favor, selecione uma empresa e insira uma quantidade válida.';
+      this.errorMessage = 'Por favor, selecione uma empresa e insira uma quantidade válida para comprar.';
     }
   }
 
   sellStock() {
     if (this.selectedCompanyIndex !== -1 && this.sellQuantity > 0) {
       const symbol = this.companyProfiles[this.selectedCompanyIndex].symbol;
-      // Implementar lógica para vender ações, se necessário
+      const pricePerShare = this.getStockQuote(symbol)?.data.c;
+  
+      if (pricePerShare) {
+        this.walletService.sellStock(symbol, this.sellQuantity).subscribe(
+          success => {
+            if (success) {
+              console.log('Venda realizada com sucesso');
+              this.balance += pricePerShare * this.sellQuantity;
+            } else {
+              console.error('Erro ao vender ações: quantidade insuficiente');
+              this.errorMessage = 'Erro ao vender ações: quantidade insuficiente';
+            }
+          },
+          error => {
+            console.error('Erro ao vender ações:', error);
+            this.errorMessage = 'Erro ao vender ações';
+          }
+        );
+      } else {
+        console.error('Erro ao obter o preço da ação');
+        this.errorMessage = 'Erro ao obter o preço da ação';
+      }
     } else {
       this.errorMessage = 'Por favor, selecione uma empresa e insira uma quantidade válida.';
     }
-  }
-}
+  }}

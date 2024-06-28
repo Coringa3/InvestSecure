@@ -23,20 +23,40 @@ export class WalletService {
   }
 
   buyStock(symbol: string, quantity: number): Observable<boolean> {
-    // Simular uma chamada assíncrona de compra de ações
     return new Observable<boolean>(observer => {
-      // Verifica se já possui ação com este símbolo
       const index = this.ownedStocks.findIndex(stock => stock.symbol === symbol);
       if (index !== -1) {
-        // Se já possuir, apenas atualiza a quantidade
         this.ownedStocks[index].quantity += quantity;
       } else {
-        // Se não possuir, adiciona uma nova entrada
         this.ownedStocks.push({ symbol, quantity });
       }
-      // Notifica que a compra foi realizada com sucesso
+      console.log(`Compra realizada: ${symbol} - ${quantity} ações`);
       observer.next(true);
       observer.complete();
     });
   }
-}
+
+  sellStock(symbol: string, quantity: number): Observable<boolean> {
+    return new Observable<boolean>(observer => {
+      const index = this.ownedStocks.findIndex(stock => stock.symbol === symbol);
+      if (index !== -1) {
+        if (this.ownedStocks[index].quantity >= quantity) {
+          // Subtrai a quantidade
+          this.ownedStocks[index].quantity -= quantity;
+          // Se a quantidade for zero, remove a ação da lista
+          if (this.ownedStocks[index].quantity === 0) {
+            this.ownedStocks.splice(index, 1);
+          }
+          console.log(`Venda realizada: ${symbol} - ${quantity} ações`);
+          observer.next(true);
+        } else {
+          console.log(`Falha na venda: quantidade insuficiente de ${symbol}`);
+          observer.next(false);
+        }
+      } else {
+        console.log(`Falha na venda: ${symbol} não encontrado`);
+        observer.next(false);
+      }
+      observer.complete();
+    });
+  }}
