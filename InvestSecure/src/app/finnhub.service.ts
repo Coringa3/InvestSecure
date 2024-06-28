@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -20,4 +20,5 @@ export class FinnhubService {
     const url = `${this.baseUrl}/stock/profile2?symbol=${symbol}&token=${this.apiKey}`;
     return this.http.get(url);
   }
+
 }

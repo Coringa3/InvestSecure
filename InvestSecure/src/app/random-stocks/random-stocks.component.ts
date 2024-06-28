@@ -1,19 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { FinnhubService } from '../finnhub.service';
+import { WalletService } from '../wallet.service';
 
 @Component({
   selector: 'app-random-stocks',
   templateUrl: './random-stocks.component.html',
   styleUrls: ['./random-stocks.component.css']
 })
-export class StockDisplayComponent implements OnInit {
+export class RandomStocksComponent implements OnInit {
   stockQuotes: any[] = [];
   companyProfiles: any[] = [];
   symbols: string[] = ['AAPL', 'GOOGL', 'TSLA', 'AMZN', 'MSFT', 'NVDA'];
   selectedCompanyIndex: number = -1;
   searchSymbol: string = '';
+  buyQuantity: number = 1;
+  sellQuantity: number = 1;
+  balance: number = 10000; // Defina um valor inicial para o saldo
+  errorMessage: string = ''; // Inicialize a mensagem de erro como vazia
 
-  constructor(private finnhubService: FinnhubService) { }
+  constructor(private finnhubService: FinnhubService, private walletService: WalletService) { }
 
   ngOnInit(): void {
     this.symbols.forEach(symbol => {
@@ -47,13 +52,6 @@ export class StockDisplayComponent implements OnInit {
 
   selectCompany(index: number): void {
     this.selectedCompanyIndex = index;
-    const selectedSymbol = this.companyProfiles[index].symbol;
-    this.showStockChart(selectedSymbol);
-  }
-
-  showStockChart(symbol: string): void {
-    console.log(`Mostrando gráfico para ação ${symbol}`);
-    // Aqui você pode usar uma biblioteca de gráficos como Chart.js ou Plotly para renderizar o gráfico
   }
 
   searchCompany(): void {
@@ -78,27 +76,55 @@ export class StockDisplayComponent implements OnInit {
                 this.companyProfiles.unshift({ symbol, data: profileData });
               }
 
-              // Limite o número de perfis a 6 (ou a quantidade desejada)
               if (this.companyProfiles.length > 6) {
                 this.companyProfiles.pop();
               }
 
-              // Limpe o campo de busca
               this.searchSymbol = '';
             },
             error => {
               console.error('Erro ao obter o perfil da empresa', error);
-              alert('Erro ao obter o perfil da empresa');
+              this.errorMessage = 'Erro ao obter o perfil da empresa';
             }
           );
         },
         error => {
           console.error('Erro ao obter a cotação das ações', error);
-          alert('Erro ao obter a cotação das ações');
+          this.errorMessage = 'Erro ao obter a cotação das ações';
         }
       );
     } else {
-      alert('Por favor, digite um símbolo de empresa.');
+      this.errorMessage = 'Por favor, digite um símbolo de empresa.';
+    }
+  }
+
+  buyStock() {
+    if (this.selectedCompanyIndex !== -1 && this.buyQuantity > 0) {
+      const symbol = this.companyProfiles[this.selectedCompanyIndex].symbol;
+      this.walletService.buyStock(symbol, this.buyQuantity).subscribe(
+        response => {
+          // Atualizar a lista de ações possuídas após a compra
+          // Isso pode ser feito automaticamente se o serviço de wallet emitir um evento ou notificação
+          console.log('Compra realizada com sucesso:', response);
+          // Atualizar o saldo após a compra (simulado)
+          this.balance -= this.getStockQuote(symbol)?.data.c * this.buyQuantity;
+        },
+        error => {
+          console.error('Erro ao comprar ações:', error);
+          this.errorMessage = 'Erro ao comprar ações';
+        }
+      );
+    } else {
+      this.errorMessage = 'Por favor, selecione uma empresa e insira uma quantidade válida.';
+    }
+  }
+
+  sellStock() {
+    if (this.selectedCompanyIndex !== -1 && this.sellQuantity > 0) {
+      const symbol = this.companyProfiles[this.selectedCompanyIndex].symbol;
+      // Implementar lógica para vender ações, se necessário
+    } else {
+      this.errorMessage = 'Por favor, selecione uma empresa e insira uma quantidade válida.';
     }
   }
 }

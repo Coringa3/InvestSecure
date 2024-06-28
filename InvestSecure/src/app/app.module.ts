@@ -4,18 +4,16 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { FinnhubService } from './finnhub.service';
-import { StockDisplayComponent } from './random-stocks/random-stocks.component';
+import { RandomStocksComponent } from './random-stocks/random-stocks.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { ComprarComponent } from './comprar/comprar.component';
-import { VenderComponent } from './vender/vender.component';
+import { OwnedStocksComponent } from './owned-stocks/owned-stocks.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StockDisplayComponent,
-    ComprarComponent,
-    VenderComponent
+    RandomStocksComponent,
+    OwnedStocksComponent
   ],
   imports: [
     BrowserModule,

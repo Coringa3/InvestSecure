@@ -1,0 +1,21 @@
+<div class="container mt-5">
+    <h2>Ações Compradas</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Símbolo</th>
+          <th>Quantidade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stock of ownedStocks">
+          <td>{{ stock.symbol }}</td>
+          <td>{{ stock.quantity }}</td>
+        </tr>
+        <tr *ngIf="ownedStocks.length === 0">
+          <td colspan="2">Você não possui nenhuma ação.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
