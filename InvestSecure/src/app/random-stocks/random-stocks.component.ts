@@ -112,7 +112,7 @@ export class RandomStocksComponent implements OnInit {
           return; // Encerra a função se o saldo for insuficiente
         }
   
-        this.walletService.buyStock(symbol, this.buyQuantity).subscribe(
+        this.walletService.buyStock(symbol, this.buyQuantity, 200).subscribe(
           success => {
             if (success) {
               console.log('Compra realizada com sucesso');

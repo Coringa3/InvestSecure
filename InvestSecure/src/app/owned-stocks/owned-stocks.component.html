@@ -5,12 +5,18 @@
         <tr>
           <th>Símbolo</th>
           <th>Quantidade</th>
+          <th>Preço Unitario</th>
+          <th>Valor da compra</th>
+          <th>Valor atual</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let stock of ownedStocks">
           <td>{{ stock.symbol }}</td>
           <td>{{ stock.quantity }}</td>
+          <td>{{stock.preco_un}}</td>
+          <td>{{stock.preco_un * stock.quantity}}</td>
+          <td>{{stock.quantity}}</td>
         </tr>
         <tr *ngIf="ownedStocks.length === 0">
           <td colspan="2">Você não possui nenhuma ação.</td>

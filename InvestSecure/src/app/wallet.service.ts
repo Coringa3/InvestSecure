@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 interface OwnedStock {
   symbol: string;
   quantity: number;
+  preco_un: number;
 }
 
 @Injectable({
@@ -11,9 +12,9 @@ interface OwnedStock {
 })
 export class WalletService {
   private ownedStocks: OwnedStock[] = [
-    { symbol: 'AAPL', quantity: 10 },
-    { symbol: 'GOOGL', quantity: 5 },
-    { symbol: 'TSLA', quantity: 15 }
+    { symbol: 'AAPL', quantity: 10 , preco_un: 200},
+    { symbol: 'GOOGL', quantity: 5 , preco_un: 190},
+    { symbol: 'TSLA', quantity: 15 , preco_un: 170}
   ];
 
   constructor() { }
@@ -22,13 +23,13 @@ export class WalletService {
     return of(this.ownedStocks);
   }
 
-  buyStock(symbol: string, quantity: number): Observable<boolean> {
+  buyStock(symbol: string, quantity: number, preco_un: number): Observable<boolean> {
     return new Observable<boolean>(observer => {
       const index = this.ownedStocks.findIndex(stock => stock.symbol === symbol);
       if (index !== -1) {
         this.ownedStocks[index].quantity += quantity;
       } else {
-        this.ownedStocks.push({ symbol, quantity });
+        this.ownedStocks.push({ symbol, quantity , preco_un});
       }
       console.log(`Compra realizada: ${symbol} - ${quantity} ações`);
       observer.next(true);
